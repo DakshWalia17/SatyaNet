@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException, UploadFile, File, status
 from app.config import settings
 from app.services.evidence_store import save_evidence
 from app.routers.analyze import _determine_forensics, MediaAnalysisResult
+from datetime import datetime, timezone
 import uuid
 import os
 import hashlib
@@ -32,7 +33,7 @@ async def upload_evidence(file: UploadFile = File(...)):
         ai_probability_score=score,
         verdict=verdict,
         suspected_engine=suspected_engine,
-        timestamp=None,
+        timestamp=datetime.now(timezone.utc).isoformat(),
         job_id=job_id,
         media_type=category,
         file_size_bytes=len(contents),
