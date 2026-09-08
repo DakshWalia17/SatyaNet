@@ -1,0 +1,42 @@
+# Render Blueprint — deploy via "New +" -> "Blueprint" in the Render
+# dashboard, pointing at the repo containing this file. Render reads this
+# automatically and provisions the service below.
+#
+# Secrets marked `sync: false` are NOT set here (never commit real secrets
+# to a repo) — Render will prompt for them once, in the dashboard, on
+# first deploy.
+services:
+  - type: web
+    name: aimd-backend
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: API_AUTH_TOKEN
+        sync: false          # set in Render dashboard: generate with `openssl rand -hex 32`
+      - key: ALLOWED_ORIGINS
+        value: "*"
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      - key: SUPABASE_MEDIA_BUCKET
+        value: aimd-media
+      - key: DEEPFAKE_MODEL_ID
+        value: prithivMLmods/Deep-Fake-Detector-v2-Model
+      - key: AUDIO_MODEL_ID
+        value: MelodyMachine/Deepfake-audio-detection-V2
+      - key: VIDEO_FRAME_SAMPLE_RATE
+        value: "10"
+      - key: MAX_FRAMES_PER_VIDEO
+        value: "60"
+      - key: AUDIO_SEGMENT_SECONDS
+        value: "4.0"
+      - key: MAX_AUDIO_SEGMENTS
+        value: "30"
+      - key: ENVIRONMENT
+        value: production
+      - key: MAX_UPLOAD_SIZE_MB
+        value: "100"
