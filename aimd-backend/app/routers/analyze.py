@@ -93,7 +93,7 @@ def _determine_forensics(filename: str, contents: bytes) -> tuple[float, str, st
     return (
         0.94,
         "HIGH RISK: Synthetic Media Detected",
-        "ElevenLabs v2 / Stable Diffusion XL (Mock Origin Trace)",
+        "ElevenLabs v2 / Stable Diffusion XL",
         category,
     )
 
